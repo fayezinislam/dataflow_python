@@ -95,11 +95,16 @@ def run():
     parser.add_argument('--fields_to_remove', type=str, default=None, help='Comma-separated list of fields to remove from the main output (e.g., "user_id,ip")')
     parser.add_argument('--num_workers', type=int, default=None, help='Initial number of workers for the job')
     parser.add_argument('--max_num_workers', type=int, default=None, help='Max number of workers for the job')
+    parser.add_argument('--network', type=str, default=None, help='VPC network name')
+    parser.add_argument('--subnetwork', type=str, default=None, help='Subnetwork name')
 
     opts = parser.parse_args()
 
     # Setting up the Beam pipeline options
-    options = PipelineOptions(save_main_session=True, streaming=True) # Make sure streaming is True
+    options = PipelineOptions(save_main_session=True, streaming=True, pipeline_options=[
+        f"--network={opts.network}",
+        f"--subnetwork={opts.subnetwork}"
+    ]) # Make sure streaming is True
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = opts.project
     google_cloud_options.region = opts.region
