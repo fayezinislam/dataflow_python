@@ -101,10 +101,10 @@ def run():
     opts = parser.parse_args()
 
     # Setting up the Beam pipeline options
-    options = PipelineOptions(save_main_session=True, streaming=True, pipeline_options=[
+    options = PipelineOptions(save_main_session=True, streaming=True, use_public_ips=False, pipeline_options=[
         f"--network={opts.network}",
         f"--subnetwork={opts.subnetwork}"
-    ]) # Make sure streaming is True
+    ]) # Make sure streaming is True and do not use Public IPs and set VPC Network and Subnetwork
     google_cloud_options = options.view_as(GoogleCloudOptions)
     google_cloud_options.project = opts.project
     google_cloud_options.region = opts.region
